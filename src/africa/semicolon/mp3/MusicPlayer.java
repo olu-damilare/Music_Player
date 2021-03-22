@@ -15,8 +15,7 @@ public class MusicPlayer {
     private boolean isMute;
     private int volumeBeforeMute;
     private ArrayList<ArrayList<Music>> playlists = new ArrayList<ArrayList<Music>>();
-    private int totalNumberOfPlaylist;
-    private int totalNumberOfMusicInPlaylist;
+
 
 
     public boolean isOn() {
