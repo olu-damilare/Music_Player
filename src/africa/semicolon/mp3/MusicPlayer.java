@@ -45,18 +45,23 @@ public class MusicPlayer {
         if (isOn) {
             int nextDownloadPosition = musicDownloadPosition();
             if (totalNumberOfMusic > 0) {
-                for (int i = 0; i < musicList.length; i++) {
-                    if (musicList[i] != null && musicList[i].equals(music)) {
-                        musicExists = true;
-                        break;
-                    }
-                }
+                musicExists = isMusicExisting(music, musicExists);
             }
-            if (musicExists == false) {
+            if (!musicExists) {
                 musicList[nextDownloadPosition] = music;
                 totalNumberOfMusic++;
             }
         }
+    }
+
+    private boolean isMusicExisting(Music music, boolean musicExists) {
+        for (Music musicLocation : musicList) {
+            if (musicLocation != null && musicLocation.equals(music)) {
+                musicExists = true;
+                break;
+            }
+        }
+        return musicExists;
     }
 
     public int getTotalNumberOfMusic() {
