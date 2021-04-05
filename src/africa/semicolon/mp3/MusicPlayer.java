@@ -14,9 +14,7 @@ public class MusicPlayer {
     private int volume;
     private boolean isMute;
     private int volumeBeforeMute;
-    private ArrayList<ArrayList<Music>> playlists = new ArrayList<ArrayList<Music>>();
-
-
+    private final ArrayList<ArrayList<Music>> playlists = new ArrayList<>();
 
     public boolean isOn() {
         return isOn;
@@ -45,23 +43,18 @@ public class MusicPlayer {
         if (isOn) {
             int nextDownloadPosition = musicDownloadPosition();
             if (totalNumberOfMusic > 0) {
-                musicExists = isMusicExisting(music, musicExists);
+                for (Music value : musicList) {
+                    if (value != null && value.equals(music)) {
+                        musicExists = true;
+                        break;
+                    }
+                }
             }
             if (!musicExists) {
                 musicList[nextDownloadPosition] = music;
                 totalNumberOfMusic++;
             }
         }
-    }
-
-    private boolean isMusicExisting(Music music, boolean musicExists) {
-        for (Music musicLocation : musicList) {
-            if (musicLocation != null && musicLocation.equals(music)) {
-                musicExists = true;
-                break;
-            }
-        }
-        return musicExists;
     }
 
     public int getTotalNumberOfMusic() {
@@ -101,11 +94,12 @@ public class MusicPlayer {
 
     public void playMusic(Music azonto) {
         if (isOn) {
-            for (int i = 0; i < musicList.length; i++) {
-                if (musicList[i] != null && musicList[i].equals(azonto)) {
+            for (Music music : musicList) {
+                if (music != null && music.equals(azonto)) {
                     currentPlayingMusic = azonto;
                     currentMusicState = PLAYING;
                     isPlayingMusic = true;
+                    break;
                 }
             }
         }
@@ -192,11 +186,10 @@ public class MusicPlayer {
                 if (musicList[i] == currentPlayingMusic) {
                     if (i + 1 == totalNumberOfMusic || musicList[i + 1] == null) {
                         currentPlayingMusic = musicList[0];
-                        break;
                     } else {
                         currentPlayingMusic = musicList[i + 1];
-                        break;
                     }
+                    break;
 
                 }
             }
@@ -249,25 +242,38 @@ public class MusicPlayer {
 
     public int numberOfMusicInPlaylist(ArrayList<Music> playlistName) {
         int playlistMusics = 0;
-        for (int i = 0; i < playlists.size(); i++) {
-            if (playlists.get(i) == playlistName)
-                playlistMusics = playlists.get(i).size();
+        for (ArrayList<Music> playlist : playlists) {
+            if (playlist == playlistName)
+                playlistMusics = playlist.size();
         }
     return playlistMusics;
     }
 
-    public void removeMusicToPlaylist(Music musicName, ArrayList<Music> playlistName) {
+    public void removeMusicFromPlaylist(Music musicName, ArrayList<Music> playlistName) {
         if(isOn())
             for (ArrayList<Music> musics : playlists) {
                 if ((musics.equals(playlistName))) {
                     musics.remove(musicName);
                 }
-
             }
     }
+
+    public void skipNextMusic() {
+        for (int i = 0; i < musicList.length; i++) {
+            if (musicList[i] == currentPlayingMusic) {
+                verifyMusicPositionToSkip(i);
+                break;
+            }
+        }
+
+    }
+
+    private void verifyMusicPositionToSkip(int position) {
+        if(currentPlayingMusic.equals(musicList[totalNumberOfMusic - 2]))
+            currentPlayingMusic = musicList[0];
+        else if(currentPlayingMusic == musicList[totalNumberOfMusic - 1])
+            currentPlayingMusic = musicList[1];
+        else
+        currentPlayingMusic = musicList[position + 2];
+    }
 }
-
-
-
-
-
