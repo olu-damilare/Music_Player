@@ -582,9 +582,9 @@ public class MusicPlayerTest {
         myMp3Player.addMusicToPlaylist(gbedu, playlist);
         assertEquals(2, myMp3Player.numberOfMusicInPlaylist(playlist));
 
-        myMp3Player.removeMusicToPlaylist(shoki, playlist);
+        myMp3Player.removeMusicFromPlaylist(shoki, playlist);
         assertEquals(1, myMp3Player.numberOfMusicInPlaylist(playlist));
-        myMp3Player.removeMusicToPlaylist(gbedu, playlist);
+        myMp3Player.removeMusicFromPlaylist(gbedu, playlist);
         assertEquals(0, myMp3Player.numberOfMusicInPlaylist(playlist));
 
 
@@ -603,10 +603,32 @@ public class MusicPlayerTest {
         assertEquals(1, myMp3Player.numberOfMusicInPlaylist(playlist));
         myMp3Player.addMusicToPlaylist(gbedu, playlist);
         assertEquals(2, myMp3Player.numberOfMusicInPlaylist(playlist));
-
         myMp3Player.toggleSwitch();
-        myMp3Player.removeMusicToPlaylist(shoki, playlist);
+        myMp3Player.removeMusicFromPlaylist(shoki, playlist);
         assertEquals(2, myMp3Player.numberOfMusicInPlaylist(playlist));
+    }
+    @Test
+    void testThatMp3CanSkipNextMusic(){
+        myMp3Player.toggleSwitch();
+        Music shoki = new Music();
+        Music gbedu = new Music();
+        Music alanta = new Music();
+        myMp3Player.download(shoki);
+        myMp3Player.download(gbedu);
+        myMp3Player.download(alanta);
+
+        myMp3Player.playMusic(shoki);
+        assertEquals(shoki, myMp3Player.getCurrentPlayingMusic());
+        myMp3Player.skipNextMusic();
+        assertEquals(alanta, myMp3Player.getCurrentPlayingMusic());
+        myMp3Player.playMusic(alanta);
+        assertEquals(alanta, myMp3Player.getCurrentPlayingMusic());
+        myMp3Player.skipNextMusic();
+        assertEquals(gbedu, myMp3Player.getCurrentPlayingMusic());
+        myMp3Player.playMusic(gbedu);
+        assertEquals(gbedu, myMp3Player.getCurrentPlayingMusic());
+        myMp3Player.skipNextMusic();
+        assertEquals(shoki, myMp3Player.getCurrentPlayingMusic());
     }
 
 }
