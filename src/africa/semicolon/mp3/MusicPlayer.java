@@ -39,7 +39,6 @@ public class MusicPlayer {
 
     public void download(Music music) {
         boolean musicExists = false;
-
         if (isOn) {
             int nextDownloadPosition = musicDownloadPosition();
             if (totalNumberOfMusic > 0) {
@@ -120,7 +119,7 @@ public class MusicPlayer {
                 isPlayingMusic = false;
             } else if (currentMusicState == PAUSED) {
                 currentMusicState = PLAYING;
-                isPlayingMusic = false;
+                isPlayingMusic = true;
             }
 
         }
